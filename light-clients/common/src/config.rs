@@ -262,7 +262,7 @@ pub trait RuntimeStorage {
 	fn beefy_validator_set_id() -> Address<StaticStorageMapKey, u64, Yes, Yes, ()>;
 
 	fn beefy_authorities(
-	) -> LocalAddress<StaticStorageMapKey, Vec<sp_consensus_beefy::crypto::Public>, Yes, Yes, ()>;
+	) -> LocalAddress<StaticStorageMapKey, Vec<sp_consensus_beefy::ecdsa_crypto::Public>, Yes, Yes, ()>;
 
 	fn mmr_leaf_beefy_next_authorities(
 	) -> LocalAddress<StaticStorageMapKey, <Self::BeefyAuthoritySet as AsInner>::Inner, Yes, Yes, ()>;

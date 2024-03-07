@@ -5,9 +5,9 @@ authors = ["Composable Developers"]
 edition = "2021"
 
 exclude = [
-  # Those files are rust-optimizer artifacts. You might want to commit them for convenience but they should not be part of the source code publication.
-  "contract.wasm",
-  "hash.txt",
+    # Those files are rust-optimizer artifacts. You might want to commit them for convenience but they should not be part of the source code publication.
+    "contract.wasm",
+    "hash.txt",
 ]
 
 [lib]
@@ -33,21 +33,32 @@ derive_more = "0.99.17"
 
 ibc = { path = "../../ibc/modules", default-features = false }
 ibc-derive = { path = "../../ibc/derive", default-features = false }
-ibc-proto = { path = "../../ibc/proto", default-features = false, features = ["json-schema"] }
+ibc-proto = { path = "../../ibc/proto", default-features = false, features = [
+    "json-schema",
+] }
 ics23 = { git = "https://github.com/cosmos/ics23", rev = "74ce807b7be39a7e0afb4e2efb8e28a57965f57b", default-features = false }
 ics10-grandpa = { path = "../ics10-grandpa", default-features = false }
 grandpa-light-client-primitives = { path = "../../algorithms/grandpa/primitives", default-features = false }
-light-client-common = { path = "../../light-clients/common", default-features = false  }
-ics08-wasm = { path = "../ics08-wasm", default-features = false, features = ["cosmwasm"] }
-sp-core = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36", default-features = false }
-sp-runtime = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36", default-features = false }
-sp-std = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36", default-features = false }
-sp-io = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36", default-features = false, features = ["disable_panic_handler", "disable_oom", "disable_allocator"] }
-sp-runtime-interface = { git = "https://github.com/paritytech/substrate", branch = "polkadot-v0.9.36", default-features = false, features = [] }
+light-client-common = { path = "../../light-clients/common", default-features = false }
+ics08-wasm = { path = "../ics08-wasm", default-features = false, features = [
+    "cosmwasm",
+] }
+sp-core = { git = "https://github.com/paritytech/polkadot-sdk.git", tag = "polkadot-v1.7.0", default-features = false }
+sp-runtime = { git = "https://github.com/paritytech/polkadot-sdk.git", tag = "polkadot-v1.7.0", default-features = false }
+sp-std = { git = "https://github.com/paritytech/polkadot-sdk.git", tag = "polkadot-v1.7.0", default-features = false }
+sp-io = { git = "https://github.com/paritytech/polkadot-sdk.git", tag = "polkadot-v1.7.0", default-features = false, features = [
+    "disable_panic_handler",
+    "disable_oom",
+    "disable_allocator",
+] }
+sp-runtime-interface = { git = "https://github.com/paritytech/polkadot-sdk.git", tag = "polkadot-v1.7.0", default-features = false, features = [
+] }
 prost = { version = "0.11", default-features = false }
 blake2-rfc = { version = "0.2.18", default-features = false }
 ed25519-zebra = { version = "3.1.0", default-features = false }
-twox-hash = { version = "1.6.3", default-features = false, features = ["digest_0_10"] }
+twox-hash = { version = "1.6.3", default-features = false, features = [
+    "digest_0_10",
+] }
 byteorder = { version = "1.3.2", default-features = false }
 digest = { version = "0.10.3", default-features = false }
 hex = "0.4.3"
@@ -57,7 +68,9 @@ finality-grandpa = { version = "0.16.2", default-features = false }
 [dev-dependencies]
 cw-multi-test = "0.15.1"
 hex = "0.4.3"
-hyperspace-primitives = { path = "../../hyperspace/primitives", features = ["testing"] }
+hyperspace-primitives = { path = "../../hyperspace/primitives", features = [
+    "testing",
+] }
 pallet-ibc = { path = "../../contracts/pallet-ibc" }
 serde-json-wasm = { version = "0.5.0", default-features = false }
 serde_json = { version = "1.0.93", default-features = false }
@@ -71,39 +84,39 @@ backtraces = ["cosmwasm-std/backtraces"]
 library = []
 default = []
 std = [
-	"blake2-rfc/std",
-	"byteorder/std",
-	"digest/std",
-	"ed25519-zebra/std",
-	"finality-grandpa/std",
-	"grandpa-light-client-primitives/std",
-	"hex/std",
-	"ibc/std",
-	"ibc-proto/std",
-	"ics08-wasm/std",
-	"ics10-grandpa/std",
-	"ics23/std",
-	"light-client-common/std",
-	"pallet-ibc/std",
-	"prost/std",
-	"serde/std",
-	"serde_json/std",
-	"sha2/std",
-	"sha3/std",
-	"sp-core/std",
-	"sp-io/std",
-	"sp-runtime/std",
-	"sp-runtime-interface/std",
-	"sp-std/std",
-	"twox-hash/std"
+    "blake2-rfc/std",
+    "byteorder/std",
+    "digest/std",
+    "ed25519-zebra/std",
+    "finality-grandpa/std",
+    "grandpa-light-client-primitives/std",
+    "hex/std",
+    "ibc/std",
+    "ibc-proto/std",
+    "ics08-wasm/std",
+    "ics10-grandpa/std",
+    "ics23/std",
+    "light-client-common/std",
+    "pallet-ibc/std",
+    "prost/std",
+    "serde/std",
+    "serde_json/std",
+    "sha2/std",
+    "sha3/std",
+    "sp-core/std",
+    "sp-io/std",
+    "sp-runtime/std",
+    "sp-runtime-interface/std",
+    "sp-std/std",
+    "twox-hash/std",
 ]
 test = [
-  "sp-io/std",
-  "sp-runtime/std",
-  "sp-runtime-interface/std",
-  "sp-core/std",
-  "ics10-grandpa/std",
-  "grandpa-light-client-primitives/std",
-  "light-client-common/std",
-  "std"
+    "sp-io/std",
+    "sp-runtime/std",
+    "sp-runtime-interface/std",
+    "sp-core/std",
+    "ics10-grandpa/std",
+    "grandpa-light-client-primitives/std",
+    "light-client-common/std",
+    "std",
 ]

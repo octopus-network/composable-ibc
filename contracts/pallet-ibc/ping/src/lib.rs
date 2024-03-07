@@ -7,7 +7,8 @@ use alloc::{
 	string::{String, ToString},
 };
 use core::{fmt::Formatter, str::FromStr, write};
-use frame_support::dispatch::{DispatchResult, Weight};
+use frame_support::dispatch::DispatchResult;
+use frame_support::pallet_prelude::Weight;
 use ibc::{
 	core::{
 		ics04_channel::{
@@ -34,15 +35,7 @@ pub const MODULE_ID: &str = "PalletIbcPing";
 pub const PORT_ID: &str = "ping";
 pub const VERSION: &str = "ping-1";
 
-#[derive(
-	Clone,
-	PartialEq,
-	Eq,
-	codec::Encode,
-	codec::Decode,
-	frame_support::RuntimeDebug,
-	scale_info::TypeInfo,
-)]
+#[derive(Clone, Debug, PartialEq, Eq, codec::Encode, codec::Decode, scale_info::TypeInfo)]
 pub struct SendPingParams {
 	pub data: Vec<u8>,
 	/// Timeout height offset relative to the client latest height
@@ -190,11 +183,11 @@ impl<T: Config + Send + Sync> Module for IbcModule<T> {
 		_relayer: &Signer,
 	) -> Result<Version, Ics04Error> {
 		if counterparty_version.to_string() != *VERSION || version.to_string() != *VERSION {
-			return Err(Ics04Error::no_common_version())
+			return Err(Ics04Error::no_common_version());
 		}
 
 		if order != Order::Ordered {
-			return Err(Ics04Error::unknown_order_type(order.to_string()))
+			return Err(Ics04Error::unknown_order_type(order.to_string()));
 		}
 
 		let ping_port = PortId::from_str(PORT_ID).expect("PORT_ID is static and valid; qed");
@@ -202,7 +195,7 @@ impl<T: Config + Send + Sync> Module for IbcModule<T> {
 			return Err(Ics04Error::implementation_specific(format!(
 				"Invalid counterparty port {:?}",
 				counterparty.port_id()
-			)))
+			)));
 		}
 
 		Ok(version.clone())

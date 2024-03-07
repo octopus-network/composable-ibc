@@ -10,22 +10,22 @@ all-features = true
 default = ["std", "rust-crypto"]
 rust-crypto = ["sha2"]
 std = [
-	"bytes/std",
-	"flex-error/std",
-	"hex/std",
-	"ibc/std",
-	"ibc-proto/std",
-	"ics23/std",
-	"log/std",
-	"prost/std",
-	"serde/std",
-	"serde_json/std",
-	"sha2?/std",
-	"subtle-encoding/std",
-	"tendermint/std",
-	"time/std",
-	"tracing/std",
-	"tracing-subscriber/std"
+    "bytes/std",
+    "flex-error/std",
+    "hex/std",
+    "ibc/std",
+    "ibc-proto/std",
+    "ics23/std",
+    "log/std",
+    "prost/std",
+    "serde/std",
+    "serde_json/std",
+    "sha2?/std",
+    "subtle-encoding/std",
+    "tendermint/std",
+    "time/std",
+    "tracing/std",
+    "tracing-subscriber/std",
 ]
 
 [dependencies]
@@ -51,11 +51,18 @@ log = { version = "0.4", default-features = false }
 ibc = { path = "../../ibc/modules", features = ["mocks"] }
 ibc-derive = { path = "../../ibc/derive" }
 env_logger = "0.9.0"
-tracing-subscriber = { version = "0.3.11", features = ["fmt", "env-filter", "json"]}
+tracing-subscriber = { version = "0.3.11", features = [
+    "fmt",
+    "env-filter",
+    "json",
+] }
 test-log = { version = "0.2.10", features = ["trace"] }
 modelator = "0.4.2"
 sha2 = { version = "0.10.2" }
-tendermint-rpc = { git = "https://github.com/informalsystems/tendermint-rs", rev = "e81f7bf23d63ffbcd242381d1ce5e35da3515ff1", features = ["http-client", "websocket-client"] }
+tendermint-rpc = { git = "https://github.com/informalsystems/tendermint-rs", rev = "e81f7bf23d63ffbcd242381d1ce5e35da3515ff1", features = [
+    "http-client",
+    "websocket-client",
+] }
 tendermint-testgen = { git = "https://github.com/informalsystems/tendermint-rs", rev = "e81f7bf23d63ffbcd242381d1ce5e35da3515ff1" } # Needed for generating (synthetic) light blocks.
 log = "0.4.17"
 tracing = "0.1.36"

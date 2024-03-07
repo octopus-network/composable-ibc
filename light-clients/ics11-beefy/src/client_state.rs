@@ -79,7 +79,7 @@ impl<H: Clone> ClientState<H> {
 			return Err(Error::Custom(
 				"ClientState next authority set id must be greater than current authority set id"
 					.to_string(),
-			))
+			));
 		}
 		let chain_id = ChainId::new(relay_chain.to_string(), para_id.into());
 
@@ -103,8 +103,8 @@ impl<H: Clone> ClientState<H> {
 		let mut authority_changed = false;
 		let (mmr_root_hash, latest_beefy_height, next_authority_set) =
 			if let Some(mmr_update) = header.mmr_update_proof {
-				if mmr_update.signed_commitment.commitment.validator_set_id ==
-					self.next_authority_set.id
+				if mmr_update.signed_commitment.commitment.validator_set_id
+					== self.next_authority_set.id
 				{
 					authority_changed = true;
 				}
@@ -159,7 +159,7 @@ impl<H: Clone> ClientState<H> {
 		if h == Height::zero() {
 			return Err(Error::Custom(
 				"ClientState frozen height must be greater than zero".to_string(),
-			))
+			));
 		}
 		Ok(Self { frozen_height: Some(h), ..self })
 	}
@@ -170,12 +170,13 @@ impl<H: Clone> ClientState<H> {
 		if latest_para_height < height {
 			return Err(Error::Custom(format!(
 				"Insufficient height, known height: {latest_para_height}, given height: {height}"
-			)))
+			)));
 		}
 
 		match self.frozen_height {
-			Some(frozen_height) if frozen_height <= height =>
-				Err(Error::Custom(format!("Client has been frozen at height {frozen_height}"))),
+			Some(frozen_height) if frozen_height <= height => {
+				Err(Error::Custom(format!("Client has been frozen at height {frozen_height}")))
+			},
 			_ => Ok(()),
 		}
 	}
@@ -276,7 +277,7 @@ impl<H> TryFrom<RawClientState> for ClientState<H> {
 				Some(BeefyNextAuthoritySet {
 					id: set.id,
 					len: set.len,
-					root: H256::decode(&mut &*set.authority_root).ok()?,
+					keyset_commitment: H256::decode(&mut &*set.authority_root).ok()?,
 				})
 			})
 			.ok_or_else(|| Error::Custom(format!("Current authority set is missing")))?;
@@ -287,7 +288,7 @@ impl<H> TryFrom<RawClientState> for ClientState<H> {
 				Some(BeefyNextAuthoritySet {
 					id: set.id,
 					len: set.len,
-					root: H256::decode(&mut &*set.authority_root).ok()?,
+					keyset_commitment: H256::decode(&mut &*set.authority_root).ok()?,
 				})
 			})
 			.ok_or_else(|| Error::Custom(format!("Next authority set is missing")))?;
@@ -322,12 +323,12 @@ impl<H> From<ClientState<H>> for RawClientState {
 			authority: Some(BeefyAuthoritySet {
 				id: client_state.authority.id,
 				len: client_state.authority.len,
-				authority_root: client_state.authority.root.encode(),
+				authority_root: client_state.authority.keyset_commitment.encode(),
 			}),
 			next_authority_set: Some(BeefyAuthoritySet {
 				id: client_state.next_authority_set.id,
 				len: client_state.next_authority_set.len,
-				authority_root: client_state.next_authority_set.root.encode(),
+				authority_root: client_state.next_authority_set.keyset_commitment.encode(),
 			}),
 			relay_chain: client_state.relay_chain as i32,
 			para_id: client_state.para_id,

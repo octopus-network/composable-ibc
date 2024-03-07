@@ -4,7 +4,7 @@ use sp_core::{crypto::ByteArray, H256};
 use sp_runtime::AccountId32;
 use sp_std::prelude::*;
 
-#[derive(codec::Encode, codec::Decode, frame_support::RuntimeDebug)]
+#[derive(codec::Encode, codec::Decode, Debug)]
 pub enum SS58CodecError {
 	/// Invalid SS58 String
 	InvalidString,
@@ -117,7 +117,7 @@ where
 
 	let data = s.from_base58().map_err(|_| PublicError::BadBase58)?;
 	if data.len() < 2 {
-		return Err(PublicError::BadLength)
+		return Err(PublicError::BadLength);
 	}
 	let (prefix_len, _) = match data[0] {
 		0..=63 => (1, data[0] as u16),
@@ -134,14 +134,14 @@ where
 		_ => return Err(PublicError::InvalidPrefix),
 	};
 	if data.len() != prefix_len + body_len + CHECKSUM_LEN {
-		return Err(PublicError::BadLength)
+		return Err(PublicError::BadLength);
 	}
 
 	let hash = ss58hash(&data[0..body_len + prefix_len]);
 	let checksum = &hash[0..CHECKSUM_LEN];
 	if data[body_len + prefix_len..body_len + prefix_len + CHECKSUM_LEN] != *checksum {
 		// Invalid checksum.
-		return Err(PublicError::InvalidChecksum)
+		return Err(PublicError::InvalidChecksum);
 	}
 
 	let result = T::from_slice(&data[prefix_len..body_len + prefix_len])

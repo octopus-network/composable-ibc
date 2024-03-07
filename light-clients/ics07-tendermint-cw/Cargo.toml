@@ -5,9 +5,9 @@ authors = ["Composable, Strangelove Developers"]
 edition = "2021"
 
 exclude = [
-  # Those files are rust-optimizer artifacts. You might want to commit them for convenience but they should not be part of the source code publication.
-  "contract.wasm",
-  "hash.txt",
+    # Those files are rust-optimizer artifacts. You might want to commit them for convenience but they should not be part of the source code publication.
+    "contract.wasm",
+    "hash.txt",
 ]
 
 [lib]
@@ -34,10 +34,14 @@ ed25519 = { version = "1.5", default-features = false }
 ed25519-consensus = { version = "2", optional = true, default-features = false }
 ibc = { path = "../../ibc/modules", default-features = false }
 ibc-derive = { path = "../../ibc/derive", default-features = false }
-ibc-proto = { path = "../../ibc/proto", default-features = false, features = ["json-schema"] }
+ibc-proto = { path = "../../ibc/proto", default-features = false, features = [
+    "json-schema",
+] }
 ics23 = { git = "https://github.com/cosmos/ics23", rev = "74ce807b7be39a7e0afb4e2efb8e28a57965f57b", default-features = false }
 ics07-tendermint = { path = "../ics07-tendermint", default-features = false }
-ics08-wasm = { path = "../ics08-wasm", default-features = false, features = ["cosmwasm"] }
+ics08-wasm = { path = "../ics08-wasm", default-features = false, features = [
+    "cosmwasm",
+] }
 prost = { version = "0.11", default-features = false }
 ed25519-zebra = { version = "3.1.0", default-features = false }
 byteorder = { version = "1.3.2", default-features = false }
@@ -50,7 +54,9 @@ tendermint-light-client-verifier = { git = "https://github.com/informalsystems/t
 [dev-dependencies]
 cw-multi-test = "0.15.1"
 hex = "0.4.3"
-hyperspace-primitives = { path = "../../hyperspace/primitives", features = ["testing"] }
+hyperspace-primitives = { path = "../../hyperspace/primitives", features = [
+    "testing",
+] }
 pallet-ibc = { path = "../../contracts/pallet-ibc" }
 serde-json-wasm = { version = "0.5.0", default-features = false }
 serde_json = { version = "1.0.93", default-features = false }
@@ -64,25 +70,23 @@ library = []
 default = ["rust-crypto"]
 rust-crypto = ["ed25519-consensus"]
 std = [
-	"byteorder/std",
-	"digest/std",
-	"ed25519/std",
-	"ed25519-consensus?/std",
-	"ed25519-zebra/std",
-	"hex/std",
-	"ibc/std",
-	"ibc-proto/std",
-	"ics07-tendermint/std",
-	"ics08-wasm/std",
-	"ics23/std",
-	"pallet-ibc/std",
-	"prost/std",
-	"serde/std",
-	"serde_json/std",
-	"sha2/std",
-	"sha3/std",
-	"tendermint/std"
+    "byteorder/std",
+    "digest/std",
+    "ed25519/std",
+    "ed25519-consensus?/std",
+    "ed25519-zebra/std",
+    "hex/std",
+    "ibc/std",
+    "ibc-proto/std",
+    "ics07-tendermint/std",
+    "ics08-wasm/std",
+    "ics23/std",
+    "pallet-ibc/std",
+    "prost/std",
+    "serde/std",
+    "serde_json/std",
+    "sha2/std",
+    "sha3/std",
+    "tendermint/std",
 ]
-test = [
-  "std"
-]
+test = ["std"]

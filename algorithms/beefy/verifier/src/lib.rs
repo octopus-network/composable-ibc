@@ -54,10 +54,10 @@ where
 	let validator_set_id = mmr_update.signed_commitment.commitment.validator_set_id;
 
 	// If signature threshold is not satisfied, return
-	if !validate_sigs_against_threshold(current_authority_set, signatures_len) &&
-		!validate_sigs_against_threshold(next_authority_set, signatures_len)
+	if !validate_sigs_against_threshold(current_authority_set, signatures_len)
+		&& !validate_sigs_against_threshold(next_authority_set, signatures_len)
 	{
-		return Err(BeefyClientError::IncompleteSignatureThreshold)
+		return Err(BeefyClientError::IncompleteSignatureThreshold);
 	}
 
 	if current_authority_set.id != validator_set_id && next_authority_set.id != validator_set_id {
@@ -65,7 +65,7 @@ where
 			current_set_id: current_authority_set.id,
 			next_set_id: next_authority_set.id,
 			commitment_set_id: validator_set_id,
-		})
+		});
 	}
 
 	// Extract root hash from signed commitment and validate it
@@ -77,10 +77,10 @@ where
 				return Err(BeefyClientError::InvalidRootHash {
 					root_hash: root.clone(),
 					len: root.len() as u64,
-				})
+				});
 			}
 		} else {
-			return Err(BeefyClientError::MmrRootHashNotFound)
+			return Err(BeefyClientError::MmrRootHashNotFound);
 		}
 	};
 
@@ -98,7 +98,7 @@ where
 		.map(|SignatureWithAuthorityIndex { index, signature }| {
 			H::secp256k1_ecdsa_recover_compressed(&signature, &commitment_hash)
 				.and_then(|public_key_bytes| {
-					beefy_primitives::crypto::AuthorityId::from_slice(&public_key_bytes).ok()
+					beefy_primitives::ecdsa_crypto::AuthorityId::from_slice(&public_key_bytes).ok()
 				})
 				.map(|pub_key| {
 					authority_indices.push(index as usize);
@@ -115,34 +115,35 @@ where
 	// Verify mmr_update.authority_proof against store root hash
 	match validator_set_id {
 		id if id == current_authority_set.id => {
-			let root_hash = current_authority_set.root;
+			let root_hash = current_authority_set.keyset_commitment;
 			if !authorities_merkle_proof.verify(
 				root_hash.into(),
 				&authority_indices,
 				&authority_leaves,
 				current_authority_set.len as usize,
 			) {
-				return Err(BeefyClientError::InvalidAuthorityProof)
+				return Err(BeefyClientError::InvalidAuthorityProof);
 			}
 		},
 		id if id == next_authority_set.id => {
-			let root_hash = next_authority_set.root;
+			let root_hash = next_authority_set.keyset_commitment;
 			if !authorities_merkle_proof.verify(
 				root_hash.into(),
 				&authority_indices,
 				&authority_leaves,
 				next_authority_set.len as usize,
 			) {
-				return Err(BeefyClientError::InvalidAuthorityProof)
+				return Err(BeefyClientError::InvalidAuthorityProof);
 			}
 			authorities_changed = true;
 		},
-		_ =>
+		_ => {
 			return Err(BeefyClientError::AuthoritySetMismatch {
 				current_set_id: current_authority_set.id,
 				next_set_id: next_authority_set.id,
 				commitment_set_id: validator_set_id,
-			}),
+			})
+		},
 	}
 
 	let latest_beefy_height = trusted_client_state.latest_beefy_height;
@@ -152,7 +153,7 @@ where
 		return Err(BeefyClientError::OutdatedCommitment {
 			latest_beefy_height,
 			commitment_block_number,
-		})
+		});
 	}
 
 	// Move on to verify mmr_proof
@@ -178,7 +179,7 @@ where
 			expected: mmr_root_hash,
 			found: root,
 			location: "verifying_latest_mmr_leaf",
-		})
+		});
 	}
 
 	trusted_client_state.latest_beefy_height = mmr_update.signed_commitment.commitment.block_number;
@@ -266,7 +267,7 @@ where
 			expected: trusted_client_state.mmr_root_hash,
 			found: root,
 			location: "verifying_parachain_headers_inclusion",
-		})
+		});
 	}
 	Ok(())
 }

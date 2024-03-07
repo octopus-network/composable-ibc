@@ -15,11 +15,13 @@ log = "0.4.17"
 hex = "0.4.3"
 tokio = { version = "1.32.0", features = ["macros", "sync"] }
 rs_merkle = "1.2.0"
-codec = { package = "parity-scale-codec", version = "3.0.0", features = ["derive"] }
+codec = { package = "parity-scale-codec", version = "3.0.0", features = [
+    "derive",
+] }
 serde_json = "1.0.74"
-derive_more = { version = "0.99", features = ["from"]  }
-serde = {version="1.0.137", features = ["derive"]}
-tokio-stream = { version = "0.1.14", features = ["sync"]}
+derive_more = { version = "0.99", features = ["from"] }
+serde = { version = "1.0.137", features = ["derive"] }
+tokio-stream = { version = "0.1.14", features = ["sync"] }
 thiserror = "1.0.31"
 itertools = "0.10.3"
 prost = { version = "0.11" }
@@ -59,11 +61,9 @@ tendermint-light-client = { git = "https://github.com/informalsystems/tendermint
     "rpc-client",
     "secp256k1",
     "unstable",
-#    "testing"
+    #    "testing"
 ] }
 tendermint-light-client-verifier = { git = "https://github.com/informalsystems/tendermint-rs", rev = "e81f7bf23d63ffbcd242381d1ce5e35da3515ff1", default-features = false }
 
 [features]
-testing = [
-    "primitives/testing"
-]
+testing = ["primitives/testing"]

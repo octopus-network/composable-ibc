@@ -4,7 +4,7 @@ extern crate alloc;
 
 use alloc::string::{String, ToString};
 use codec::{Decode, Encode};
-use frame_support::{weights::Weight, RuntimeDebug};
+use frame_support::weights::Weight;
 use ibc::{
 	applications::transfer::{error::Error as Ics20Error, PrefixedCoin, VERSION},
 	core::{
@@ -26,9 +26,7 @@ use sp_std::{prelude::*, str::FromStr};
 pub mod runtime_interface;
 
 /// Packet timeout, could be an offset, or absolute value.
-#[derive(
-	frame_support::RuntimeDebug, PartialEq, Eq, scale_info::TypeInfo, Encode, Decode, Clone,
-)]
+#[derive(PartialEq, Eq, scale_info::TypeInfo, Encode, Decode, Clone)]
 pub enum Timeout {
 	Offset {
 		/// Timestamp at which this packet should timeout in counterparty in seconds
@@ -335,7 +333,7 @@ pub enum Error {
 	Other { msg: Option<String> },
 }
 
-#[derive(Clone, PartialEq, Eq, Encode, Decode, RuntimeDebug, TypeInfo)]
+#[derive(Clone, PartialEq, Eq, Encode, Decode, TypeInfo)]
 /// Captures all parameters needed to initialize a channel
 pub struct OpenChannelParams {
 	/// channel order

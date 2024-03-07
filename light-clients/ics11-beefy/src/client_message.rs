@@ -136,7 +136,7 @@ impl TryFrom<RawClientMessage> for ClientMessage {
 									BeefyNextAuthoritySet {
 										id: next_set.id,
 										len: next_set.len,
-										root: H256::decode(
+										keyset_commitment: H256::decode(
 											&mut next_set.authority_root.as_slice(),
 										)?,
 									}
@@ -169,7 +169,7 @@ impl TryFrom<RawClientMessage> for ClientMessage {
 												return Err(Error::Custom(format!(
 													"Invalid proof item with len {}",
 													item.len()
-												)))
+												)));
 											}
 											dest.copy_from_slice(&*item);
 											Ok(dest)
@@ -207,7 +207,7 @@ impl TryFrom<RawClientMessage> for ClientMessage {
 							.iter()
 							.filter_map(|item| {
 								if item.payload_id.as_slice() != MMR_ROOT_ID {
-									return None
+									return None;
 								}
 								let mut payload_id = [0u8; 2];
 								payload_id.copy_from_slice(&item.payload_id);
@@ -235,7 +235,7 @@ impl TryFrom<RawClientMessage> for ClientMessage {
 								return Err(Error::Custom(format!(
 									"Invalid signature length: {}",
 									commitment_sig.signature.len()
-								)))
+								)));
 							}
 							Ok(SignatureWithAuthorityIndex {
 								signature: {
@@ -278,7 +278,7 @@ impl TryFrom<RawClientMessage> for ClientMessage {
 							beefy_next_authority_set: BeefyNextAuthoritySet {
 								id: beefy_next_authority_set.id,
 								len: beefy_next_authority_set.len,
-								root: H256::decode(
+								keyset_commitment: H256::decode(
 									&mut beefy_next_authority_set.authority_root.as_slice(),
 								)
 								.map_err(|e| Error::Custom(format!("{e}")))?,
@@ -306,7 +306,7 @@ impl TryFrom<RawClientMessage> for ClientMessage {
 									return Err(Error::Custom(format!(
 										"Invalid authorities proof item with len: {}",
 										item.len()
-									)))
+									)));
 								}
 								let mut dest = [0u8; 32];
 								dest.copy_from_slice(&item);
@@ -365,7 +365,7 @@ impl From<ClientMessage> for RawClientMessage {
 										authority_root: para_header
 											.partial_mmr_leaf
 											.beefy_next_authority_set
-											.root
+											.keyset_commitment
 											.encode(),
 									}),
 								}),
@@ -407,7 +407,7 @@ impl From<ClientMessage> for RawClientMessage {
 									authority_root: mmr_update
 										.latest_mmr_leaf
 										.beefy_next_authority_set
-										.root
+										.keyset_commitment
 										.encode(),
 								}),
 								parachain_heads: mmr_update.latest_mmr_leaf.leaf_extra.encode(),
